@@ -34,8 +34,8 @@ class Game:
         self.bg = pygame.transform.scale(self.bg, (500,750))
 
         #this will show the screen
-        while True:
-            self.screen = pygame.display.set_mode((self.width,self.height))
-            pygame.display.set_caption('Type Speed test')
+        
+        self.screen = pygame.display.set_mode((self.width,self.height))
+        pygame.display.set_caption('Type Speed test')
 
 Game()
