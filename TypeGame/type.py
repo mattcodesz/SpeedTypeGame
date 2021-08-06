@@ -74,10 +74,11 @@ class Game:
         count = 0
         for i,c in enumerate(self.word):
             try:
-                if self.input_text[i] == c:
+                if self.input[i] == c:
                     count += 1
             except:
                 pass
+        print(self.word)
         if len(self.word) > 0:
             self.accuracy = count/len(self.word) * 100
         else:
