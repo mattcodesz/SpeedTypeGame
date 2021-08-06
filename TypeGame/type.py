@@ -34,10 +34,35 @@ class Game:
         self.bg = pygame.transform.scale(self.bg, (500,750))
 
         #this will show the screen
+        
         self.screen = pygame.display.set_mode((self.width,self.height))
-        pygame.display.set_caption('Type Speed test')
+        pygame.display.set_caption('Typing Speed test')
 
-        def drawtext(self):
-            pass
+
+        #func to draw text. takes in the screen that text will be drawn on
+        #the text to be drawn, y-axis, font size, and color of text
+        def drawtext(self, screen, msg, y, fsize, color):
+            #uses system default font 
+            font = pygame.font.Font(None, fsize)
+            #renders the message using the desired font and color, uses aa
+            text = font.render(msg, True, color)
+            #creates a rectangle for the text to be drawn on
+            text_rect = text.get_rect(center=(self.width/2, y))
+            #places the text on the rect
+            screen.blit(text, text_rect)
+            #updates the display
+            pygame.display.update()
+
+        #we need a sentence that will be used 
+        def getSentence(self):
+            #opens the sentence file to read the sentences
+            f=open('sentences.txt').read()
+            #seperates the sentences by \n and stores them
+            sentences = f.split('\n')
+            #chooses a single sentence at random
+            sentence=random.choice(sentences)
+            return sentence
+        
+
 
 Game()
