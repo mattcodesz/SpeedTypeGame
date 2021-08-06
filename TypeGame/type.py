@@ -68,32 +68,47 @@ class Game:
         return sentence
         
     def showResults(self, screen):
+        #for getting the time
         if not self.end:
             self.totalTime = time.time() - self.timeStart
-            
+        
+        #this calculates the accuracy
         count = 0
+        #loop through the characters at position i and see if the input at i matches the element c
         for i,c in enumerate(self.word):
             try:
                 if self.input[i] == c:
+                    #add 1 to the count if it matches
                     count += 1
             except:
                 pass
+        #for debugging
         print(self.word)
+        #for possible errors that would create a divide by zero error
         if len(self.word) > 0:
             self.accuracy = count/len(self.word) * 100
         else:
+            #error number
             self.accuracy = 35505
 
         #words per minute
         self.wpm = len(self.input)*60/(5*self.totalTime)
         self.end = True
 
+        #sometimes an error would exist if you submitted too fast so this just puts time at zero for obvious wrong times
+        if self.totalTime > 100000:
+            self.totalTime = 0
+        
+        #store the results to display them
         self.results = 'Time:'+str(round(self.totalTime)) +" secs Accuracy:"+ str(round(self.accuracy)) + "%" + ' Wpm: ' + str(round(self.wpm))
 
-        self.drawText(screen, 'Reset', self.height-70, 26, (100,100,100))
+        #this is to draw the reset button after the input has been submitted
+        self.drawText(screen, 'Reset', self.height-70, 26, (170,80,150))
+        #this is to draw a box around the reset button
         pygame.draw.rect(self.screen,(255,192,25), (325,405,100,50), 2)
 
         print(self.results)
+        #update the display
         pygame.display.update()
 
     def run(self):
