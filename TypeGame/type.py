@@ -35,7 +35,7 @@ class Game:
         pygame.init()
         #this will load the background onto the window
         self.bg = pygame.image.load('background.jpg')
-        self.bg = pygame.transform.scale(self.bg, (500,750))
+        self.bg = pygame.transform.scale(self.bg, (750,500))
 
         #this will show the screen
         
