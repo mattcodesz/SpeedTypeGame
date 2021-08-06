@@ -72,13 +72,16 @@ class Game:
             self.totalTime = time.time() - self.timeStart
             
         count = 0
-        i = 0
-        for element in self.word:
-            if self.input[i] == element:
-                count += 1
-                i += 1
-            else: i += 1
-        self.accuracy = count/len(self.word) * 100
+        for i,c in enumerate(self.word):
+            try:
+                if self.input_text[i] == c:
+                    count += 1
+            except:
+                pass
+        if len(self.word) > 0:
+            self.accuracy = count/len(self.word) * 100
+        else:
+            self.accuracy = 35505
 
         #words per minute
         self.wpm = len(self.input)*60/(5*self.totalTime)
@@ -87,7 +90,7 @@ class Game:
         self.results = 'Time:'+str(round(self.totalTime)) +" secs Accuracy:"+ str(round(self.accuracy)) + "%" + ' Wpm: ' + str(round(self.wpm))
 
         self.drawText(screen, 'Reset', self.height-70, 26, (100,100,100))
-        pygame.draw.rect(self.screen,(255,192,25), (self.height/2,300,100,50), 2)
+        pygame.draw.rect(self.screen,(255,192,25), (325,405,100,50), 2)
 
         print(self.results)
         pygame.display.update()
@@ -98,7 +101,7 @@ class Game:
         self.running = True
         while self.running:
             clock = pygame.time.Clock()
-            self.screen.fill((0,0,0), (50,250,650,50), 2)
+            self.screen.fill((0,0,0), (50,250,650,50))
             pygame.draw.rect(self.screen,self.HEAD_C, (50,250,650,50), 2)
             self.drawText(self.screen, self.input, 274, 26, (250,250,250))
             pygame.display.update()
@@ -117,7 +120,7 @@ class Game:
                     if(x>=310 and x<=510 and y>=390 and self.end):
                         self.resetGame()
                         x,y = pygame.mouse.get_pos()
-                elif event.tpye == pygame.KEYDOWN:
+                elif event.type == pygame.KEYDOWN:
                     if self.active and not self.end:
                         if event.key == pygame.K_RETURN:
                             print(self.input)
@@ -134,8 +137,23 @@ class Game:
                                 pass
             pygame.display.update()
         clock.tick(60)
-        
+
     def resetGame(self):
-        pass
+        self.reset = False
+        self.end = False
+        self.input = ''
+        self.word = ''
+        self.timeStart = 0
+        self.totalTime = 0
+        self.wpm = 0
+
+        self.word = self.getSentence()
+        self.screen.fill((0,0,0))
+        self.screen.blit(self.bg, (0,0))
+        msg = 'Speed Typing Test'
+        self.drawText(self.screen, msg, 80, 75, self.HEAD_C)
+        pygame.draw.rect(self.screen,(255,192,25), (50,250,650,50), 2)
+
+        self.drawText(self.screen, self.word,200, 28,self.TEXT_C)
 
 Game().run()
