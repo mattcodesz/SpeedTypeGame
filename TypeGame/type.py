@@ -35,7 +35,7 @@ class Game:
         pygame.init()
         #this will load the background onto the window
         self.bg = pygame.image.load('background.jpg')
-        self.bg = pygame.transform.scale(self.bg, (500,750))
+        self.bg = pygame.transform.scale(self.bg, (750,500))
 
         #this will show the screen
         
@@ -74,10 +74,11 @@ class Game:
         count = 0
         for i,c in enumerate(self.word):
             try:
-                if self.input_text[i] == c:
+                if self.input[i] == c:
                     count += 1
             except:
                 pass
+        print(self.word)
         if len(self.word) > 0:
             self.accuracy = count/len(self.word) * 100
         else:
