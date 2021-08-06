@@ -29,6 +29,9 @@ class Game:
         #this will display the results 
         self.results = 'Time:0 Accuracy:0 WPM:0 '
         self.end = False
+        self.HEAD_C = (255,213,102)
+        self.TEXT_C = (240,240,240)
+        self.RESULT_C = (255,70,70)
         pygame.init()
         #this will load the background onto the window
         self.bg = pygame.image.load('background.jpg')
@@ -42,7 +45,7 @@ class Game:
 
     #func to draw text. takes in the screen that text will be drawn on
     #the text to be drawn, y-axis, font size, and color of text
-    def drawtext(self, screen, msg, y, fsize, color):
+    def drawText(self, screen, msg, y, fsize, color):
         #uses system default font 
         font = pygame.font.Font(None, fsize)
         #renders the message using the desired font and color, uses aa
@@ -92,4 +95,47 @@ class Game:
     def run(self):
         self.resetGame()
 
-Game()
+        self.running = True
+        while self.running:
+            clock = pygame.time.Clock()
+            self.screen.fill((0,0,0), (50,250,650,50), 2)
+            pygame.draw.rect(self.screen,self.HEAD_C, (50,250,650,50), 2)
+            self.drawText(self.screen, self.input, 274, 26, (250,250,250))
+            pygame.display.update()
+
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    self.running = False
+                    sys.exit()
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    x,y = pygame.mouse.get_pos()
+                    #position of input
+                    if(x>=50 and x<=510 and y>=250 and y<=300):
+                        self.active = True
+                        self.input = ''
+                        self.timeStart = time.time()
+                    if(x>=310 and x<=510 and y>=390 and self.end):
+                        self.resetGame()
+                        x,y = pygame.mouse.get_pos()
+                elif event.tpye == pygame.KEYDOWN:
+                    if self.active and not self.end:
+                        if event.key == pygame.K_RETURN:
+                            print(self.input)
+                            self.showResults(self.screen)
+                            print(self.results)
+                            self.drawText(self.screen, self.results, 350, 30, self.RESULT_C)
+                            self.end = True
+                        elif event.key == pygame.K_BACKSPACE:
+                            self.input = self.input[:-1]
+                        else:
+                            try:
+                                self.input += event.unicode
+                            except:
+                                pass
+            pygame.display.update()
+        clock.tick(60)
+        
+    def resetGame(self):
+        pass
+
+Game().run()
